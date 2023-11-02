@@ -51,6 +51,20 @@ It works for sentences that were wrong to begin with as well though:
 - "I hate math" -> For Mr. G, this is a `false` statement.
 - "I do not hate math" -> This is the negation of the previous statement, and for Mr. G, it is `true`.
 
+Here is what this might look like with our conditional statements with this example from the `NotesNot1.java` file:
+
+```java
+boolean isStudent = false;
+
+if (!isStudent) {
+    System.out.println("This person is not a student");
+} else {
+    System.out.println("This person is a student");
+}
+```
+
+Can you predict which portion of the `if` block is going to happen? Let's work through it! The `if` statement is processing `!isStudent`, which when we know that `isStudent` is `false`, is really `!false`. The opposite of `false` is `true`, so `!isStudent` is equivalent to `true`. Since the boolean expression is `true`, the `if` statement executes its first portion of code, which prints out `"This person is not a student"`.
+
 ### `and`
 
 `and` is an operator that needs both inputs to be `true` to produce a `true` value, and otherwise will always be `false`. `and` is represented by a double ampersand `&&`, with a boolean value written to the left and to the right of it to act on (just like you write numbers on each side of `+`).
@@ -82,6 +96,25 @@ Now let's try some combinations:
 - "I hate video games and I am 25" -> This is equivalent to `false && true`, and it makes sense in English that the first half breaks this, making it `false` for Mr. G.
 - "I hate math and I hate video games" -> This is equivalent to `false && false`, and it makes sense in English that if nothing is true, then the whole sentence must be `false` for Mr. G.
 
+Here is what this might look like with our conditional statements with this example from the `NotesAnd1.java` file:
+
+```java
+boolean isStudent = true;
+boolean hasMoney = false;
+
+if (isStudent && hasMoney) {
+    System.out.println("This person can just pay for college");
+} else if (isStudent) {
+    System.out.println("This person is going to college and will need a loan to pay for it");
+} else if (hasMoney) {
+    System.out.println("This person can pay for it, but is not going to college and doesn't need to pay for it");
+} else {
+    System.out.println("This person is not going to college, and doesn't need to worry about whether or not they can pay for it");
+}
+```
+
+Can you predict which portion of the `if` block is going to happen? Let's work through it! The `if` statement is processing `isStudent && hasMoney`, which when we know that `isStudent` is `true` and `hasMoney` is `false`, is really `true && false`. `and` is only `true` when both pieces are `true`, so `true && false` is equivalent to `false`. Since the boolean expression is `false`, the `if` statement skips its first portion of code, and moves to process the next `else if`, which is asking `isStudent`. We know `isStudent` is `true`, so this boolean expression is `true` and we should execute the line of code inside of it. This will print out `"This person is going to college and will need a loan to pay for it"` and then skip the rest of the `if` block.
+
 ### `or`
 
 `or` is an operator that needs at least one input to be `true` to produce a `true` value, and will produce `false` when both inputs are `false`. `or` is represented by a double pipe `||`, with a boolean value written to the left and to the right of it to act on (just like you write numbers on each side of `+`).
@@ -110,6 +143,28 @@ Now let's try some combinations:
 - "I am a teacher or I hate math" -> This is equivalent to `true || false`, and it makes sense in English that the first half makes this work, making it `true` for Mr. G.
 - "I hate video games or I am 25" -> This is equivalent to `false || true`, and it makes sense in English that the second half makes this work, making it `true` for Mr. G.
 - "I hate math or I hate video games" -> This is equivalent to `false || false`, and it makes sense in English that if nothing is true, then the whole sentence must be `false` for Mr. G.
+
+Here is what this might look like with our conditional statements with this example from the `NotesOr1.java` file:
+
+```java
+boolean friendsOnline = true;
+boolean gameToPlay = false;
+
+if (friendsOnline || gameToPlay) {
+    System.out.print("I should hop on my computer ");
+    if (friendsOnline && gameToPlay) {
+        System.out.println("because I have my friends to play my game with");
+    } else if (friendsOnline) {
+        System.out.println("because my friends are online");
+    } else {
+        System.out.println("because I have a game I want to play");
+    }
+} else {
+    System.out.println("This person is not going to college, and doesn't need to worry about whether or not they can pay for it");
+}
+```
+
+Can you predict what the output will be? Let's work through it! The `if` statement is processing `friendsOnline || gameToPlay`, which when we know that `friendsOnline` is `true` and `gameToPlay` is `false`, is really `true || false`. `or` is only `false` when both pieces are `false`, so `true || false` is equivalent to `true`. This means we execute what is inside the `if` statement, which we notice is a `print` followed by a nested `if` block, to further select what we need to do. To determine our final line of printing, we need to process `friendsOnline && gameToPlay`, because the reason that the `or` statement from before is `true` has three options: both pieces were true (this is our `and`), or one of the two pieces was true. We know from earlier that `friendsOnline && gameToPlay` is equivalent to `true && false`, which turns out to `false`, so we move on to the `else if`. Since `friendsOnline` is `true`, the boolean expression is `true` and we use the print statement from the `else if` to complete our final statement: `"I should hop on my computer because my friends are online"`.
 
 ---
 
@@ -145,178 +200,34 @@ Sometimes when given an expression like this, we'll use a truth table to determi
 
 Once we do this, we can see that our example above of `p` as `true` and `q` as `false` was actually the outlier in this situation. Any other combination of values for `p` and `q` produces `true` in this expression!
 
-
-# `else if` Statements
-
-We often refer to an `if` statement as a one-way selector, as it has only one direction to go: when the **boolean expression** is `true`. In the Unit 3 Section 3, we introduced `if-else` statements, which function as two-way selectors, as it has two directions to go: when the **boolean expression** is `true`, or when it is `false`. In real life, decision-making is much more complex than just two options, and so we would wonder if we can combine some tools we have to overcome the limitation of booleans only having two values.
-
----
-
-## `if-else if` Statements
-
-Unlike `if` and `if-else` statements, an **`else if` statement** doesn't exist on it's own, it is instead incorporated into one of the other two tools in order to make them more powerful. The most typical application of this new tool would be creating an `if-else if` statement. This is something that might make sense to first work through a real-life decision in English and then translate it into a program. Here is our situation:
-
-```
-I am going to apply for a loan to buy a house. One of the things the bank takes into consideration is my age.
-The bank has a process they follow to decide what interest rate I can get:
-1. If I am older than 30, I can get a 3% interest rate on my loan.
-2. If I am not older than 30, but I am older than 20, I can get a 4% interest rate on my loan. (Higher interest rate is worse).
-
-So I tell the bank that I am 25.
-They go through their process:
-1. Am I older than 30? I am not. Continue on.
-2. Am I older than 20? I am. I can have the 4% interest rate.
-
-On the other hand, my friend Sam is 33 and goes to the bank for a loan as well.
-They go through their process:
-1. Is Sam older than 30? Yes he is. He can have the 3% interest rate.
-The bank doesn't bother checking if Sam is older than 20 because they have already found his interest rate.
-```
-
-This scenario is an example of `if-else if` statement in action. The first ask a question, "are you older than 30". If you are, you get the 3% interest rate, but if you aren't, instead of just making a blanket statement that you can have the 4% interest rate, they ask a follow-up question, "are you older than 20". If you are, then you get the 4% interest rate and we are done, but if you aren't their process just ends, since I guess they wouldn't give a loan for a house to a person under 20.
-
-Essentially, we've done two `if` statements, `if age is over 30` and `if age is over 20`, but the second `if` statement will only happen when needed, which is why it is an `if-else if` statement, as opposed to just an `if-if` statement. Let's turn this scenario into a Java program, which can be seen in this example from the `NotesIfElseIf1.java` file:
+We can also process statements that use our relational operators from Unit 3 Section 1, since they can produce booleans for us to work with. Here is an example from the `NotesCompound1.java` file:
 
 ```java
-int age = 25; // Mr. G's age
-if (age > 30) {
-    System.out.println("You can have the 4% interest rate.");
-} else if (age > 20) {
-    System.out.println("You can have the 3% interest rate.");
-}
-```
+int age = 25;
+double cash = 100.0;
 
-When run, we expect this to assign us the 4% interest rate, let's see if it works:
-
-```
-You can have the 4% interest rate.
-```
-
-It does! Here is an example from the `NotesIfElseIf2.java` file where the only change is that we put in Sam's age of 33:
-
-```java
-int age = 33; // Mr. G's friend Sam's age
-if (age > 30) {
-    System.out.println("You can have the 4% interest rate.");
-} else if (age > 20) {
-    System.out.println("You can have the 3% interest rate.");
-}
-```
-
-When run, we expect this to assign Sam the 3% interest rate, let's see if it works:
-
-```
-You can have the 3% interest rate.
-```
-
-Even though we are using the keyword `else`, which in Unit 3 Section 3 meant that we will always have something to do, it is possible here to not do either of the options presented. Let's say one of you all tried to get a loan from this bank as a high school student, here is the slightly modified example from the `NotesIfElseIf3.java` file to show what might happen:
-
-```java
-int age = 16; // Sample student age
-if (age > 30) {
-    System.out.println("You can have the 4% interest rate.");
-} else if (age > 20) {
-    System.out.println("You can have the 3% interest rate.");
-}
-```
-
-We know that in the real-life example, this would have just not given you an interest, but the program we put together works a little bit differently. We'd expect here for the program to just not offer us an interest rate:
-
-```
-
-```
-
-The output is just blank, nothing is printed! This makes sense based on the code, but doesn't make any sense in real life, as the bank would at least let us know they can't offer us an iterest rate! There must be a piece we are missing that could enable us to handle a final "other" option.
-
----
-
-## `if-else if-else` Statements
-
-Continuing with the above example, it would be reasonable for the bank to add a third step to their process, as follows:
-
-```
-1. If I am older than 30, I can get a 3% interest rate on my loan.
-2. If I am not older than 30, but I am older than 20, I can get a 4% interest rate on my loan. (Higher interest rate is worse).
-3. If I am not older than 20, then I cannot get a loan.
-```
-
-Fortunately in code, this is just as simple as adding another piece to our existing `if-else if` statement, an `else` statement, and we can continue on. Here is an example from the `NotesIfElseIfElse1.java` file:
-
-```java
-int age = 16; // Sample student age
-if (age > 30) {
-    System.out.println("You can have the 4% interest rate.");
-} else if (age > 20) {
-    System.out.println("You can have the 3% interest rate.");
+if (age >= 18 && cash >= 250.0) {
+    System.out.println("You can rent a car!");
+} else if (age >= 18) {
+    System.out.println("You are old enough to rent a car, but cannot afford it.");
+} else if (cash >= 250.0) {
+    System.out.println("You can afford to rent a car, but are not old enough to rent one.");
 } else {
-    System.out.println("You cannot have a loan.");
+    System.out.println("You are not old enough to rent a car and could not afford it anyways.");
 }
 ```
 
-Adding this `else` statement shouldn't effect our working examples, because `else` would only happen when everything else fails, which was only in the case of the student example. Now, we expect to hear from the bank to let us know what the status of our loan is if they don't offer us an interest rate:
-
-```
-You cannot have a loan.
-```
-
-Excellent! Well, not excellent that you can't get a loan, but excellent that it works! Regardless of how many pieces there are to your `if` statement, you can always end it with a singular `else` to offer a final alternative. "Regardless of how many pieces", does this mean we can have more options?
+Can you predict what the output will be? Let's work through it! The `if` statement is processing `age >= 18 && cash >= 250.0`, which is a large compound statement to process. Using our operator precedence, we know that the first thing we should tackle is `age >= 18` since it is the first relational operator when working from left-to-right. In this case, `age` is `25`, so the statement is equivalent to `25 >= 18`, which we know is `true`. Now our statement is `true && cash >= 250.0`, and so `cash >= 250.0` should come next since `>=` comes before `&&` in operator precedence. Since `cash` is `100.0`, we know that this is equivalent to `100.0 > 250.0`, which we can calculate is `false`. Our statement is now `true && false`, which calculates to be `false`, meaning we will skip the initial `if` and start checking the `else if`. The `else if` has the expression `age >= 18`, which we already calculated is `true`, so we will execute this section, printing out `"You are old enough to rent a car, but cannot afford it."` and skipping the rest.
 
 ---
 
-## `if-else if-...-else if-else` Statements
+## Short-Circuit Evaluation
 
-That's right, we can have as many options as we want, all we need to do is add more `else if` statements to our chain! Let's liven up our real-life scenario by making it more realistic, with more interest rate breakpoints:
+Since programming languages do so much calculation, they sometimes approach calculations in a really smart way to save time and energy. In certain circumstances, we can know the results of `and` or `or` statements without finishing the calculation, which we refer to as **short-circuit evaluation**.
 
-```
-1. If I am older than 60, I can get a 1% interest rate on my loan.
-2. If I am not older than 60, but I am older than 50, I can get a 1.5% interest rate on my loan. (Higher interest rate is worse).
-3. If I am not older than 50, but I am older than 40, I can get a 2% interest rate on my loan. (Higher interest rate is worse).
-4. If I am not older than 40, but I am older than 30, I can get a 2.5% interest rate on my loan. (Higher interest rate is worse).
-5. If I am not older than 30, but I am older than 20, I can get a 3% interest rate on my loan. 
-6. If I am not older than 20, then I cannot get a loan.
-```
+Let's start with `and`. We said earlier that `and` was really *picky*, since it only produced `true` when both sides are `true`. Another way to phrase this is `false` if either side is `false`. This means that when evaluating an `and` statement, if the first boolean is `false`, we know that the output will have to be `false`, regardless of the second value. In this situation, Java won't bother to check the other side of the statement and jump to the final answer of `false`.
 
-The bank's process is 6 steps now! Let's turn this into code to make it easier for the people that work there. Here is an example from the `NotesIfElseIfElseIfElse1.java` file:
-
-```java
-int age = 53; // Mr. G's father's age
-double interestRate = -1.0;
-if (age > 60) {
-    interestRate = 1.0;
-} else if (age > 50) {
-    interestRate = 1.5;
-} else if (age > 40) {
-    interestRate = 2.0;
-} else if (age > 30) {
-    interestRate = 2.5;
-} else if (age > 20) {
-    interestRate = 3.0;
-} else {
-    System.out.println("You cannot have a loan.");
-}
-
-if (interestRate > 0) {
-    System.out.println("You can have the " + interestRate + "% interest rate.");
-}
-```
-
-This code was rewritten more than the previous examples to make it easier to read and work with. Now there is an `interestRate` variable that changes throughout the `if` statement and then is printed with later. At the end, we need to check that `interestRate` has been changed before we tell them what their interest rate is.
-
-We plugged my dad's age into here to see if it works right. We expect this should give him an interest rate of `1.5%` if we set this up right:
-
-```
-You can have the 1.5% interest rate.
-```
-
----
-
-## Wrap-Up
-
-With the pieces of `if`, `else if` and `else`, we can accomplish almost anything! Combinations of these pieces can often be referred to as an `if` block. These are the rules for an `if` block:
-
-1. Only 1 `if` statement.
-2. 0 to many `else if` statements.
-3. 0 or 1 `else` statements.
+We can do something similar with `or`, where we said it was really not *picky*, since it almost always produces `true`. `or` will be `true` if just one side is `true`. This means that when evaluating an `or` statement, if the first boolean is `true`, we know that the output will have to be `true`, regardless of the second value. In this situation, Java won't bother to check the other side of the statement and jump to the final answer of `true`.
 
 ---
 
